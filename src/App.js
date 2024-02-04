@@ -1,51 +1,78 @@
 import { useReducer, useState } from "react";
 import "./styles.css";
+const DEPOSIT = 150;
+const WITHDRAW = 50;
+const LOAN = 5000;
 
 export default function App() {
-  const [check, setCheck] = useState(false);
   const [loan, setLoan] = useState(0);
   const [isActive, setIsactive] = useState(false);
   const [balance, setBalance] = useState(0);
 
-console.log(isActive);
-
-  // console.log(check);
   function openAccount() {
     setBalance(500);
     setIsactive(true);
-    
+    setLoan(0);
   }
-
+  function deposit() {
+    setBalance((balance) => balance + DEPOSIT);
+  }
+  function withdraw() {
+    setBalance((balance) => balance - WITHDRAW);
+  }
+  function requestLoan() {
+    if (loan > 0) return;
+    setBalance((x) => x + LOAN);
+    setLoan(LOAN);
+  }
+  function payLoan() {
+    setBalance((balance) => balance - LOAN);
+    setLoan(0);
+  }
+  function closeAccount() {
+    if (loan > 0 || balance !== 0) return;
+    setIsactive(false);
+  }
 
   return (
     <div className="App">
       <h1>useReducer Bank Account</h1>
       <p>Balance: {balance}</p>
       <p>Loan: {loan}</p>
-      <p><button onClick={openAccount}>Open Account</button>
-      </p>{check && <p>Check..............</p>}
-      <p><button onClick={() => setCheck(true)}>Deposit 150</button>
-      </p>{check && <p>Check..............</p>}
-      <p><button onClick={() => setCheck(true)}>Withdraw 50</button>
-      </p>{check && <p>Check..............</p>}
-      <p><button onClick={() => setCheck(true)}>Request a loan of 5000</button>
-      </p>{check && <p>Check..............</p>}
-      <p><button onClick={() => setCheck(true)}>Pay loan</button>
-      </p>{check && <p>Check..............</p>}
-      <p><button onClick={() => setCheck(false)}>Close account</button>
+      <p>
+        <button onClick={openAccount} disabled={isActive}>
+          Open Account
+        </button>
       </p>
-      
 
+      <p>
+        <button onClick={deposit} disabled={!isActive}>
+          Deposit {DEPOSIT}{" "}
+        </button>
+      </p>
+      <p>
+        <button onClick={withdraw} disabled={!isActive}>
+          Withdraw {WITHDRAW}{" "}
+        </button>
+      </p>
+      <p>
+        <button onClick={requestLoan} disabled={!isActive}>
+          Request a loan of {LOAN}
+        </button>
+      </p>
+      <p>
+        <button onClick={payLoan} disabled={!isActive}>
+          Pay loan
+        </button>
+      </p>
+      <p>
+        <button onClick={closeAccount} disabled={!isActive}>
+          Close account
+        </button>
+      </p>
     </div>
-  )
+  );
 }
-
-
-
-
-
-
-
 
 // const initialState = {
 //   balance: 0,
@@ -95,17 +122,6 @@ console.log(isActive);
 
 //   )
 // }
-
-
-
-
-
-
-
-
-
-
-
 
 /*
 INSTRUCTIONS / CONSIDERATIONS:
