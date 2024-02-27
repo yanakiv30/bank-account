@@ -1,4 +1,4 @@
-import { useReducer, useState } from "react";
+import { useReducer} from "react";
 import "./styles.css";
 
 
@@ -38,6 +38,7 @@ function reducer(state, action) {
 
 export default function App() {
 const [{balance, loan, isActive}, dispatch] = useReducer(reducer, initialState);
+
 
   
   return (
